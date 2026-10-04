@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DocuSentinel AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        /* ==========================================
+           NAVBAR
+        ========================================== */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .status {
+            font-size: 14px;
+            color: #86efac;
+        }
+
+        /* ==========================================
+           CONTAINER
+        ========================================== */
+
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 35px 20px;
+        }
+
+        /* ==========================================
+           HERO
+        ========================================== */
+
+        .hero {
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            margin-bottom: 10px;
+            font-size: 36px;
+        }
+
+        .hero p {
+            color: #6b7280;
+            font-size: 17px;
+        }
+
+        /* ==========================================
+           CARDS
+        ========================================== */
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        /* ==========================================
+           UPLOAD
+        ========================================== */
+
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        /* ==========================================
+           DOCUMENT LIST
+        ========================================== */
+
+        .document {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .document:last-child {
+            border-bottom: none;
+        }
+
+        /* ==========================================
+           QUERY
+        ========================================== */
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        /* ==========================================
+           ANSWER
+        ========================================== */
+
+        .answer-box {
+            background: #f8fafc;
+            border-left: 5px solid #2563eb;
+            padding: 20px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        /* ==========================================
+           STATS
+        ========================================== */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        /* ==========================================
+           CONFLICT
+        ========================================== */
+
+        .conflict {
+            border-left: 5px solid #dc2626;
+            background: #fef2f2;
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .conflict-title {
+            font-weight: bold;
+            color: #b91c1c;
+            margin-bottom: 10px;
+        }
+
+        /* ==========================================
+           EVIDENCE
+        ========================================== */
+
+        .evidence {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 15px;
+        }
+
+        .evidence-header {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .evidence-meta {
+            font-size: 14px;
+            margin: 6px 0;
+            color: #4b5563;
+        }
+
+        .similarity {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .evidence-text {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        /* ==========================================
+           HIDDEN
+        ========================================== */
+
+        .hidden {
+            display: none;
+        }
+
+        /* ==========================================
+           LOADING
+        ========================================== */
+
+        .loading {
+            margin-top: 15px;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        /* ==========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     NAVBAR
+================================================== -->
+
+<div class="navbar">
+
+    <div class="brand">
+        🛡 DocuSentinel AI
+    </div>
+
+    <div class="status">
+        ● Investigation System Online
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+    <!-- ==================================================
+         HERO
+    ================================================== -->
+
+    <div class="hero">
+
+        <h1>
+            Intelligent Document Investigation
+        </h1>
+
+        <p>
+            Upload documents, retrieve evidence,
+            detect conflicts, and investigate
+            information using grounded AI.
+        </p>
+
+    </div>
+
+
+    <!-- ==================================================
+         UPLOAD DOCUMENTS
+    ================================================== -->
+
+    <div class="card">
+
+        <h2>
+            📁 Upload Documents
+        </h2>
+
+        <p>
+            Upload PDF, DOCX, or TXT files.
+            Multiple documents can be uploaded together.
+        </p>
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+            <input
+                type="file"
+                name="documents"
+                multiple
+                accept=".pdf,.docx,.txt"
+                required
+            >
+
+            <br>
+
+            <button type="submit">
+                Upload Documents
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ==================================================
+         UPLOADED DOCUMENTS
+    ================================================== -->
+
+    <div class="card">
+
+        <h2>
+            📚 Uploaded Documents
+        </h2>
+
+        {% if documents %}
+
+            {% for document in documents %}
+
+                <div class="document">
+
+                    📄
+                    <strong>
+                        {{ document.title }}
+                    </strong>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>
+                No documents uploaded yet.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ==================================================
+         INVESTIGATION
+    ================================================== -->
+
+    <div class="card">
+
+        <h2>
+            🔍 Start an Investigation
+        </h2>
+
+        <p>
+            Ask a question about the uploaded documents.
+        </p>
+
+        <form id="investigationForm">
+
+            <textarea
+                id="query"
+                name="query"
+                placeholder="Example: What is the final project submission deadline?"
+                required
+            ></textarea>
+
+            <br><br>
+
+            <button type="submit">
+                Investigate
+            </button>
+
+        </form>
+
+        <div
+            id="loading"
+            class="loading hidden"
+        >
+            🔎 Investigating documents...
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         RESULTS
+    ================================================== -->
+
+    <div
+        id="resultsSection"
+        class="hidden"
+    >
+
+
+        <!-- ==================================================
+             AI ANSWER
+        ================================================== -->
+
+        <div class="card">
+
+            <h2>
+                🤖 AI Investigation Answer
+            </h2>
+
+            <div
+                id="answer"
+                class="answer-box"
+            ></div>
+
+        </div>
+
+
+        <!-- ==================================================
+             EVIDENCE ASSESSMENT
+        ================================================== -->
+
+        <div class="card">
+
+            <h2>
+                📊 Evidence Assessment
+            </h2>
+
+            <div class="stats">
+
+                <div class="stat">
+
+                    <div>
+                        Sources Retrieved
+                    </div>
+
+                    <div
+                        id="sourceCount"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div>
+                        Evidence Chunks
+                    </div>
+
+                    <div
+                        id="chunkCount"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div>
+                        Conflict Status
+                    </div>
+
+                    <div
+                        id="conflictStatus"
+                        class="stat-number"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             CONFLICTS
+        ================================================== -->
+
+        <div
+            id="conflictsSection"
+            class="card hidden"
+        >
+
+            <h2>
+                ⚠️ Conflicting Evidence Detected
+            </h2>
+
+            <div id="conflictsContainer"></div>
+
+        </div>
+
+
+        <!-- ==================================================
+             SUPPORTING EVIDENCE
+        ================================================== -->
+
+        <div class="card">
+
+            <h2>
+                📚 Supporting Evidence
+            </h2>
+
+            <div id="evidenceContainer"></div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+// ==========================================================
+// HTML ESCAPE
+// ==========================================================
+
+function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+// ==========================================================
+// INVESTIGATION FORM
+// ==========================================================
+
+document
+    .getElementById("investigationForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const query =
+                document
+                    .getElementById("query")
+                    .value
+                    .trim();
+
+
+            if (!query) {
+
+                alert(
+                    "Please enter an investigation question."
+                );
+
+                return;
+            }
+
+
+            // ------------------------------------------------
+            // SHOW LOADING
+            // ------------------------------------------------
+
+            document
+                .getElementById("loading")
+                .classList
+                .remove("hidden");
+
+
+            document
+                .getElementById("resultsSection")
+                .classList
+                .add("hidden");
+
+
+            // ------------------------------------------------
+            // SEND REQUEST
+            // ------------------------------------------------
+
+            const formData =
+                new FormData();
+
+            formData.append(
+                "query",
+                query
+            );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/investigate/",
+                        {
+                            method: "POST",
+                            body: formData,
+                            headers: {
+                                "X-CSRFToken":
+                                    getCookie("csrftoken")
+                            }
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.error ||
+                        "Investigation failed."
+                    );
+
+                }
+
+
+                // ------------------------------------------------
+                // SHOW RESULTS
+                // ------------------------------------------------
+
+                document
+                    .getElementById("resultsSection")
+                    .classList
+                    .remove("hidden");
+
+
+                // ------------------------------------------------
+                // AI ANSWER
+                // ------------------------------------------------
+
+                document
+                    .getElementById("answer")
+                    .textContent =
+                    data.answer || "";
+
+
+                // ------------------------------------------------
+                // RESULTS
+                // ------------------------------------------------
+
+                const results =
+                    data.results || [];
+
+
+                // ------------------------------------------------
+                // UNIQUE SOURCES
+                // ------------------------------------------------
+
+                const uniqueSources =
+                    new Set(
+                        results.map(
+                            result =>
+                                result.document
+                        )
+                    );
+
+
+                document
+                    .getElementById("sourceCount")
+                    .textContent =
+                    uniqueSources.size;
+
+
+                // ------------------------------------------------
+                // CHUNK COUNT
+                // ------------------------------------------------
+
+                document
+                    .getElementById("chunkCount")
+                    .textContent =
+                    results.length;
+
+
+                // ------------------------------------------------
+                // CONFLICT STATUS
+                // ------------------------------------------------
+
+                const conflictCount =
+                    data.conflict_count || 0;
+
+
+                if (conflictCount > 0) {
+
+                    document
+                        .getElementById("conflictStatus")
+                        .textContent =
+                        "⚠️ Conflicts Detected";
+
+                } else {
+
+                    document
+                        .getElementById("conflictStatus")
+                        .textContent =
+                        "✅ No Conflicts";
+
+                }
+
+
+                // ------------------------------------------------
+                // CONFLICTS
+                // ------------------------------------------------
+
+                const conflicts =
+                    data.conflicts || [];
+
+
+                const conflictsSection =
+                    document
+                        .getElementById(
+                            "conflictsSection"
+                        );
+
+
+                const conflictsContainer =
+                    document
+                        .getElementById(
+                            "conflictsContainer"
+                        );
+
+
+                conflictsContainer.innerHTML = "";
+
+
+                if (conflicts.length > 0) {
+
+                    conflictsSection
+                        .classList
+                        .remove("hidden");
+
+
+                    conflicts.forEach(
+                        conflict => {
+
+                            const conflictDiv =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            conflictDiv.className =
+                                "conflict";
+
+
+                            conflictDiv.innerHTML = `
+
+                                <div class="conflict-title">
+
+                                    Conflict Type:
+                                    ${escapeHtml(
+                                        conflict.type
+                                    )}
+
+                                </div>
+
+                                <p>
+                                    ${escapeHtml(
+                                        conflict.reason
+                                    )}
+                                </p>
+
+                                <p>
+                                    <strong>
+                                        📄
+                                        ${escapeHtml(
+                                            conflict.document_a
+                                        )}
+                                    </strong>
+                                </p>
+
+                                <p>
+                                    ${escapeHtml(
+                                        conflict.evidence_a
+                                    )}
+                                </p>
+
+                                <p>
+                                    <strong>
+                                        📄
+                                        ${escapeHtml(
+                                            conflict.document_b
+                                        )}
+                                    </strong>
+                                </p>
+
+                                <p>
+                                    ${escapeHtml(
+                                        conflict.evidence_b
+                                    )}
+                                </p>
+
+                            `;
+
+
+                            conflictsContainer
+                                .appendChild(
+                                    conflictDiv
+                                );
+
+                        }
+                    );
+
+                } else {
+
+                    conflictsSection
+                        .classList
+                        .add("hidden");
+
+                }
+
+
+                // ------------------------------------------------
+                // SUPPORTING EVIDENCE
+                // ------------------------------------------------
+
+                const evidenceContainer =
+                    document
+                        .getElementById(
+                            "evidenceContainer"
+                        );
+
+
+                evidenceContainer.innerHTML = "";
+
+
+                results.forEach(
+                    result => {
+
+                        const evidenceDiv =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        evidenceDiv.className =
+                            "evidence";
+
+
+                        // ----------------------------------------
+                        // SOURCE
+                        // ----------------------------------------
+
+                        const source =
+                            result.source_reference ||
+                            result.document ||
+                            "Unknown Source";
+
+
+                        // ----------------------------------------
+                        // SECTION
+                        // ----------------------------------------
+
+                        const section =
+                            result.section_reference ||
+                            `Evidence Chunk ${
+                                result.chunk_number
+                            }`;
+
+
+                        // ----------------------------------------
+                        // PAGE
+                        // ----------------------------------------
+
+                        let pageText =
+                            "Not applicable";
+
+
+                        if (
+                            result.page_number !== null &&
+                            result.page_number !== undefined
+                        ) {
+
+                            pageText =
+                                `Page ${
+                                    result.page_number
+                                }`;
+
+                        }
+
+
+                        // ----------------------------------------
+                        // MATCH LEVEL
+                        // ----------------------------------------
+
+                        let matchLevel =
+                            result.match_level;
+
+
+                        if (!matchLevel) {
+
+                            const score =
+                                Number(
+                                    result.score || 0
+                                );
+
+
+                            if (score >= 0.30) {
+
+                                matchLevel =
+                                    "Strong";
+
+                            } else if (
+                                score >= 0.15
+                            ) {
+
+                                matchLevel =
+                                    "Moderate";
+
+                            } else {
+
+                                matchLevel =
+                                    "Weak";
+
+                            }
+
+                        }
+
+
+                        // ----------------------------------------
+                        // CREATE CARD
+                        // ----------------------------------------
+
+                        evidenceDiv.innerHTML = `
+
+                            <div class="evidence-header">
+
+                                📄 Source:
+                                ${escapeHtml(
+                                    source
+                                )}
+
+                            </div>
+
+                            <div class="evidence-meta">
+
+                                📌 Section:
+                                <strong>
+                                    ${escapeHtml(
+                                        section
+                                    )}
+                                </strong>
+
+                            </div>
+
+                            <div class="evidence-meta">
+
+                                📖 Page:
+                                <strong>
+                                    ${escapeHtml(
+                                        pageText
+                                    )}
+                                </strong>
+
+                            </div>
+
+                            <div>
+
+                                <span class="similarity">
+
+                                    🔎 Similarity:
+                                    ${escapeHtml(
+                                        matchLevel
+                                    )}
+
+                                </span>
+
+                            </div>
+
+                            <div class="evidence-meta">
+
+                                Evidence Chunk:
+                                <strong>
+                                    ${escapeHtml(
+                                        result.chunk_number
+                                    )}
+                                </strong>
+
+                            </div>
+
+                            <div class="evidence-text">
+
+                                ${escapeHtml(
+                                    result.text
+                                )}
+
+                            </div>
+
+                        `;
+
+
+                        evidenceContainer
+                            .appendChild(
+                                evidenceDiv
+                            );
+
+                    }
+                );
+
+
+            } catch (error) {
+
+                alert(
+                    error.message
+                );
+
+            } finally {
+
+                document
+                    .getElementById("loading")
+                    .classList
+                    .add("hidden");
+
+            }
+
+        }
+    );
+
+
+// ==========================================================
+// GET CSRF COOKIE
+// ==========================================================
+
+function getCookie(name) {
+
+    let cookieValue = null;
+
+
+    if (document.cookie) {
+
+        const cookies =
+            document.cookie.split(";");
+
+
+        for (
+            let cookie of cookies
+        ) {
+
+            cookie =
+                cookie.trim();
+
+
+            if (
+                cookie.startsWith(
+                    name + "="
+                )
+            ) {
+
+                cookieValue =
+                    decodeURIComponent(
+                        cookie.substring(
+                            name.length + 1
+                        )
+                    );
+
+                break;
+
+            }
+
+        }
+
+    }
+
+
+    return cookieValue;
+}
+
+
+</script>
+
+</body>
+
+</html>
