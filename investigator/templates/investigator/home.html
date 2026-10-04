@@ -2,13 +2,8 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>DocuSentinel AI</title>
 
@@ -16,115 +11,137 @@
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
             font-family: Arial, Helvetica, sans-serif;
             background: #f5f7fb;
-            color: #1f2937;
+            color: #172033;
         }
 
-        /* ==========================================
-           NAVBAR
-        ========================================== */
+        /* ================= NAVBAR ================= */
 
         .navbar {
             background: #111827;
             color: white;
-            padding: 18px 40px;
+            padding: 18px 7%;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .brand {
-            font-size: 22px;
+        .logo {
+            font-size: 21px;
             font-weight: bold;
         }
 
-        .status {
-            font-size: 14px;
-            color: #86efac;
+        .logo span {
+            color: #60a5fa;
         }
 
-        /* ==========================================
-           CONTAINER
-        ========================================== */
+        .nav-status {
+            font-size: 13px;
+            color: #a7f3d0;
+        }
+
+        /* ================= MAIN ================= */
 
         .container {
-            max-width: 1150px;
-            margin: 0 auto;
-            padding: 35px 20px;
+            width: 86%;
+            max-width: 1200px;
+            margin: 40px auto;
         }
 
-        /* ==========================================
-           HERO
-        ========================================== */
+        /* ================= HERO ================= */
 
         .hero {
-            margin-bottom: 30px;
+            background: white;
+            border-radius: 18px;
+            padding: 38px;
+            margin-bottom: 25px;
+            border: 1px solid #e5e7eb;
         }
 
         .hero h1 {
+            font-size: 34px;
             margin-bottom: 10px;
-            font-size: 36px;
         }
 
         .hero p {
-            color: #6b7280;
-            font-size: 17px;
+            color: #64748b;
+            font-size: 16px;
+            line-height: 1.6;
         }
 
-        /* ==========================================
-           CARDS
-        ========================================== */
+        /* ================= GRID ================= */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
 
         .card {
             background: white;
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
         }
 
         .card h2 {
-            margin-top: 0;
+            font-size: 20px;
+            margin-bottom: 8px;
         }
 
-        /* ==========================================
-           UPLOAD
-        ========================================== */
+        .card-description {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
 
-        input[type="file"] {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
+        /* ================= UPLOAD ================= */
+
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 28px;
+            text-align: center;
             margin-bottom: 15px;
         }
 
-        button {
+        .upload-area input {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .button {
             background: #2563eb;
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 12px 20px;
+            border-radius: 9px;
+            padding: 11px 20px;
             cursor: pointer;
-            font-size: 15px;
             font-weight: bold;
         }
 
-        button:hover {
+        .button:hover {
             background: #1d4ed8;
         }
 
-        /* ==========================================
-           DOCUMENT LIST
-        ========================================== */
+        .button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        /* ================= DOCUMENTS ================= */
 
         .document {
-            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 0;
             border-bottom: 1px solid #e5e7eb;
         }
 
@@ -132,154 +149,433 @@
             border-bottom: none;
         }
 
-        /* ==========================================
-           QUERY
-        ========================================== */
-
-        textarea {
-            width: 100%;
-            min-height: 100px;
-            padding: 14px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            resize: vertical;
-            font-family: inherit;
-            font-size: 15px;
+        .document-name {
+            font-weight: 600;
+            font-size: 14px;
         }
 
-        /* ==========================================
-           ANSWER
-        ========================================== */
+        .document-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 13px;
+        }
 
-        .answer-box {
-            background: #f8fafc;
-            border-left: 5px solid #2563eb;
-            padding: 20px;
+        /* ================= INVESTIGATION ================= */
+
+        .investigation-card {
+            margin-top: 25px;
+        }
+
+        .query-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .query-box input {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .query-box input:focus {
+            border-color: #2563eb;
+        }
+
+        #investigationStatus {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        /* ================= FOLLOW-UP ================= */
+
+        .followup-card {
             margin-top: 20px;
-            white-space: pre-wrap;
-            line-height: 1.6;
+            background: #f8fafc;
+            border: 1px solid #bfdbfe;
+            border-radius: 14px;
+            padding: 20px;
         }
 
-        /* ==========================================
-           STATS
-        ========================================== */
+        .followup-title {
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
 
-        .stats {
+        .followup-description {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .followup-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .followup-button {
+            background: white;
+            color: #1e3a8a;
+            border: 1px solid #bfdbfe;
+            border-radius: 9px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .followup-button:hover {
+            background: #eff6ff;
+            border-color: #60a5fa;
+        }
+
+        /* ================= ANSWER ================= */
+
+        .answer-card {
+            margin-top: 20px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .answer-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .answer-text {
+            white-space: pre-wrap;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* ================= ASSESSMENT ================= */
+
+        .assessment-card {
+            margin-top: 20px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .assessment-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .assessment-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
         }
 
-        .stat {
+        .assessment-item {
             background: #f8fafc;
-            padding: 20px;
             border-radius: 10px;
+            padding: 15px;
             text-align: center;
         }
 
-        .stat-number {
-            font-size: 28px;
+        .assessment-number {
+            font-size: 24px;
             font-weight: bold;
-            margin-top: 8px;
+            color: #1d4ed8;
         }
 
-        /* ==========================================
-           CONFLICT
-        ========================================== */
-
-        .conflict {
-            border-left: 5px solid #dc2626;
-            background: #fef2f2;
-            padding: 18px;
-            border-radius: 8px;
-            margin-top: 15px;
-        }
-
-        .conflict-title {
-            font-weight: bold;
-            color: #b91c1c;
-            margin-bottom: 10px;
-        }
-
-        /* ==========================================
-           EVIDENCE
-        ========================================== */
-
-        .evidence {
-            background: #f8fafc;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 18px;
-            margin-top: 15px;
-        }
-
-        .evidence-header {
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-
-        .evidence-meta {
-            font-size: 14px;
-            margin: 6px 0;
-            color: #4b5563;
-        }
-
-        .similarity {
-            display: inline-block;
-            background: #dcfce7;
-            color: #166534;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
+        .assessment-label {
+            color: #64748b;
+            font-size: 12px;
             margin-top: 5px;
         }
 
-        .evidence-text {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            line-height: 1.6;
-            color: #374151;
+        /* ================= STRENGTH ================= */
+
+        .strength-card {
+            margin-top: 20px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 22px;
         }
 
-        /* ==========================================
-           HIDDEN
-        ========================================== */
-
-        .hidden {
-            display: none;
+        .strength-title {
+            font-size: 19px;
+            font-weight: bold;
+            margin-bottom: 16px;
         }
 
-        /* ==========================================
-           LOADING
-        ========================================== */
+        .strength-score-container {
+            text-align: center;
+        }
 
-        .loading {
-            margin-top: 15px;
+        .strength-score {
+            font-size: 38px;
+            font-weight: bold;
             color: #2563eb;
+        }
+
+        .strength-label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #475569;
+            margin-top: 5px;
+        }
+
+        .strength-bar {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .strength-bar-fill {
+            height: 100%;
+            background: #2563eb;
+            border-radius: 20px;
+        }
+
+        .strength-reasons {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 18px;
+        }
+
+        .strength-reason {
+            font-size: 13px;
+            margin: 8px 0;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .strength-note {
+            margin-top: 14px;
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        /* ================= STATUS ================= */
+
+        .conflict-status {
+            margin-top: 15px;
+            padding: 13px;
+            border-radius: 9px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .conflict-found {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .no-conflict {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* ================= COMPARISON ================= */
+
+        .comparison-card {
+            margin-top: 25px;
+            background: #fffbeb;
+            border: 1px solid #fbbf24;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .comparison-title {
+            font-size: 19px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .comparison-subtitle {
+            color: #92400e;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .comparison-source {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .comparison-source h4 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .comparison-source p {
+            color: #334155;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .conflict-badge {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 12px;
             font-weight: bold;
         }
 
-        /* ==========================================
-           RESPONSIVE
-        ========================================== */
+        /* ================= CONFLICT ================= */
 
-        @media (max-width: 700px) {
+        .conflict-card {
+            margin-top: 15px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 12px;
+            padding: 18px;
+        }
 
-            .navbar {
-                padding: 15px 20px;
+        .conflict-card h4 {
+            color: #9a3412;
+            margin-bottom: 8px;
+        }
+
+        .conflict-card p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #475569;
+            margin-top: 5px;
+        }
+
+        /* ================= EVIDENCE ================= */
+
+        .evidence-section {
+            margin-top: 25px;
+        }
+
+        .evidence-card {
+            margin-top: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 20px;
+            background: white;
+        }
+
+        .evidence-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .source-name {
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .score {
+            background: #f1f5f9;
+            padding: 5px 9px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .evidence-meta {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .evidence-text {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 9px;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        /* ================= MESSAGES ================= */
+
+        .empty {
+            color: #94a3b8;
+            font-size: 14px;
+            padding: 10px 0;
+        }
+
+        .error {
+            color: #b91c1c;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .success {
+            color: #047857;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 800px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .query-box {
+                flex-direction: column;
             }
 
             .hero h1 {
                 font-size: 28px;
             }
 
-            .stats {
+            .comparison-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .assessment-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .followup-buttons {
+                flex-direction: column;
+            }
+
+            .followup-button {
+                width: 100%;
+                text-align: left;
             }
 
         }
@@ -291,857 +587,1282 @@
 
 <body>
 
+<!-- ================= NAVBAR ================= -->
 
-<!-- ==================================================
-     NAVBAR
-================================================== -->
+<nav class="navbar">
 
-<div class="navbar">
-
-    <div class="brand">
-        🛡 DocuSentinel AI
+    <div class="logo">
+        🛡 DocuSentinel <span>AI</span>
     </div>
 
-    <div class="status">
+    <div class="nav-status">
         ● Investigation System Online
     </div>
 
-</div>
+</nav>
 
 
 <div class="container">
 
+    <!-- ================= HERO ================= -->
 
-    <!-- ==================================================
-         HERO
-    ================================================== -->
-
-    <div class="hero">
+    <section class="hero">
 
         <h1>
             Intelligent Document Investigation
         </h1>
 
         <p>
-            Upload documents, retrieve evidence,
-            detect conflicts, and investigate
-            information using grounded AI.
+            Upload documents, retrieve evidence, detect conflicts,
+            and investigate information using grounded AI.
         </p>
 
-    </div>
+    </section>
 
 
-    <!-- ==================================================
-         UPLOAD DOCUMENTS
-    ================================================== -->
+    <!-- ================= UPLOAD + DOCUMENTS ================= -->
 
-    <div class="card">
+    <div class="grid">
 
-        <h2>
-            📁 Upload Documents
-        </h2>
+        <!-- UPLOAD -->
 
-        <p>
-            Upload PDF, DOCX, or TXT files.
-            Multiple documents can be uploaded together.
-        </p>
+        <div class="card">
 
-        <form
-            method="POST"
-            enctype="multipart/form-data"
-        >
+            <h2>
+                📤 Upload Documents
+            </h2>
 
-            {% csrf_token %}
+            <p class="card-description">
+                Supported formats: PDF, DOCX and TXT
+            </p>
 
-            <input
-                type="file"
-                name="documents"
-                multiple
-                accept=".pdf,.docx,.txt"
-                required
+            <form
+                method="POST"
+                enctype="multipart/form-data"
             >
 
-            <br>
+                {% csrf_token %}
 
-            <button type="submit">
-                Upload Documents
-            </button>
+                <div class="upload-area">
 
-        </form>
-
-    </div>
-
-
-    <!-- ==================================================
-         UPLOADED DOCUMENTS
-    ================================================== -->
-
-    <div class="card">
-
-        <h2>
-            📚 Uploaded Documents
-        </h2>
-
-        {% if documents %}
-
-            {% for document in documents %}
-
-                <div class="document">
-
-                    📄
                     <strong>
-                        {{ document.title }}
+                        Select investigation documents
                     </strong>
+
+                    <br>
+
+                    <input
+                        type="file"
+                        name="documents"
+                        multiple
+                        accept=".pdf,.docx,.txt"
+                        required
+                    >
 
                 </div>
 
-            {% endfor %}
+                <button
+                    class="button"
+                    type="submit"
+                >
+                    Upload &amp; Index
+                </button>
 
-        {% else %}
+            </form>
 
-            <p>
-                No documents uploaded yet.
+        </div>
+
+
+        <!-- DOCUMENT LIST -->
+
+        <div class="card">
+
+            <h2>
+                📚 Uploaded Documents
+            </h2>
+
+            <p class="card-description">
+                Documents currently available for investigation.
             </p>
 
-        {% endif %}
+            {% if documents %}
+
+                {% for document in documents %}
+
+                    <div class="document">
+
+                        <div class="document-name">
+                            📄 {{ document.title }}
+                        </div>
+
+                        <a
+                            class="document-link"
+                            href="{{ document.file.url }}"
+                            target="_blank"
+                        >
+                            View
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty">
+                    No documents uploaded yet.
+                </div>
+
+            {% endif %}
+
+        </div>
 
     </div>
 
 
-    <!-- ==================================================
-         INVESTIGATION
-    ================================================== -->
+    <!-- ================= INVESTIGATION ================= -->
 
-    <div class="card">
+    <section class="card investigation-card">
 
         <h2>
             🔍 Start an Investigation
         </h2>
 
-        <p>
+        <p class="card-description">
             Ask a question about the uploaded documents.
         </p>
 
-        <form id="investigationForm">
 
-            <textarea
-                id="query"
+        <form
+            id="investigationForm"
+            class="query-box"
+        >
+
+            {% csrf_token %}
+
+            <input
+                type="text"
+                id="investigationQuery"
                 name="query"
                 placeholder="Example: What is the final project submission deadline?"
+                autocomplete="off"
                 required
-            ></textarea>
+            >
 
-            <br><br>
-
-            <button type="submit">
+            <button
+                type="submit"
+                class="button"
+                id="investigateButton"
+            >
                 Investigate
             </button>
 
         </form>
 
-        <div
-            id="loading"
-            class="loading hidden"
-        >
-            🔎 Investigating documents...
-        </div>
 
-    </div>
+        <div id="investigationStatus"></div>
 
+        <div id="investigationResults"></div>
 
-    <!-- ==================================================
-         RESULTS
-    ================================================== -->
-
-    <div
-        id="resultsSection"
-        class="hidden"
-    >
-
-
-        <!-- ==================================================
-             AI ANSWER
-        ================================================== -->
-
-        <div class="card">
-
-            <h2>
-                🤖 AI Investigation Answer
-            </h2>
-
-            <div
-                id="answer"
-                class="answer-box"
-            ></div>
-
-        </div>
-
-
-        <!-- ==================================================
-             EVIDENCE ASSESSMENT
-        ================================================== -->
-
-        <div class="card">
-
-            <h2>
-                📊 Evidence Assessment
-            </h2>
-
-            <div class="stats">
-
-                <div class="stat">
-
-                    <div>
-                        Sources Retrieved
-                    </div>
-
-                    <div
-                        id="sourceCount"
-                        class="stat-number"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="stat">
-
-                    <div>
-                        Evidence Chunks
-                    </div>
-
-                    <div
-                        id="chunkCount"
-                        class="stat-number"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="stat">
-
-                    <div>
-                        Conflict Status
-                    </div>
-
-                    <div
-                        id="conflictStatus"
-                        class="stat-number"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- ==================================================
-             CONFLICTS
-        ================================================== -->
-
-        <div
-            id="conflictsSection"
-            class="card hidden"
-        >
-
-            <h2>
-                ⚠️ Conflicting Evidence Detected
-            </h2>
-
-            <div id="conflictsContainer"></div>
-
-        </div>
-
-
-        <!-- ==================================================
-             SUPPORTING EVIDENCE
-        ================================================== -->
-
-        <div class="card">
-
-            <h2>
-                📚 Supporting Evidence
-            </h2>
-
-            <div id="evidenceContainer"></div>
-
-        </div>
-
-
-    </div>
+    </section>
 
 </div>
 
 
+<!-- ================= JAVASCRIPT ================= -->
+
 <script>
 
+    /* ============================================================
+       GET HTML ELEMENTS
+       ============================================================ */
 
-// ==========================================================
-// HTML ESCAPE
-// ==========================================================
+    const investigationForm =
+        document.getElementById("investigationForm");
 
-function escapeHtml(value) {
+    const investigationQuery =
+        document.getElementById("investigationQuery");
 
-    if (value === null || value === undefined) {
-        return "";
+    const investigationStatus =
+        document.getElementById("investigationStatus");
+
+    const investigationResults =
+        document.getElementById("investigationResults");
+
+    const investigateButton =
+        document.getElementById("investigateButton");
+
+
+    /* ============================================================
+       ESCAPE HTML
+       ============================================================ */
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return "";
+        }
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            String(value);
+
+        return div.innerHTML;
     }
 
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
+
+    /* ============================================================
+       GET CSRF TOKEN
+       ============================================================ */
+
+    function getCsrfToken() {
+
+        const csrfInput =
+            document.querySelector(
+                "#investigationForm input[name='csrfmiddlewaretoken']"
+            );
+
+        if (!csrfInput) {
+            return "";
+        }
+
+        return csrfInput.value;
+    }
 
 
-// ==========================================================
-// INVESTIGATION FORM
-// ==========================================================
+    /* ============================================================
+       RUN INVESTIGATION
+       ============================================================ */
 
-document
-    .getElementById("investigationForm")
-    .addEventListener(
-        "submit",
-        async function(event) {
+    async function runInvestigation(question) {
 
-            event.preventDefault();
+        const query =
+            String(question || "").trim();
 
 
-            const query =
-                document
-                    .getElementById("query")
-                    .value
-                    .trim();
+        /* ================= EMPTY QUESTION ================= */
+
+        if (!query) {
+
+            investigationStatus.innerHTML = `
+                <div class="error">
+                    ❌ Please enter an investigation question.
+                </div>
+            `;
+
+            return;
+        }
 
 
-            if (!query) {
+        /* ================= PUT QUESTION IN INPUT ================= */
 
-                alert(
-                    "Please enter an investigation question."
+        investigationQuery.value =
+            query;
+
+
+        /* ================= DISABLE BUTTON ================= */
+
+        investigateButton.disabled =
+            true;
+
+        investigateButton.textContent =
+            "Investigating...";
+
+
+        /* ================= SHOW LOADING ================= */
+
+        investigationStatus.innerHTML = `
+            <div class="success">
+                🔄 Investigating uploaded documents...
+            </div>
+        `;
+
+        investigationResults.innerHTML =
+            "";
+
+
+        /* ================= CREATE FORM DATA ================= */
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "query",
+            query
+        );
+
+
+        /* ================= CSRF ================= */
+
+        const csrfToken =
+            getCsrfToken();
+
+
+        try {
+
+            /* ====================================================
+               SEND REQUEST TO DJANGO
+               ==================================================== */
+
+            const response =
+                await fetch(
+                    "/investigate/",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "X-CSRFToken": csrfToken,
+                            "X-Requested-With": "XMLHttpRequest"
+                        },
+
+                        body: formData
+                    }
                 );
 
-                return;
-            }
 
+            /* ====================================================
+               READ RESPONSE SAFELY
+               ==================================================== */
 
-            // ------------------------------------------------
-            // SHOW LOADING
-            // ------------------------------------------------
+            const responseText =
+                await response.text();
 
-            document
-                .getElementById("loading")
-                .classList
-                .remove("hidden");
+            console.log(
+                "HTTP Status:",
+                response.status
+            );
 
-
-            document
-                .getElementById("resultsSection")
-                .classList
-                .add("hidden");
-
-
-            // ------------------------------------------------
-            // SEND REQUEST
-            // ------------------------------------------------
-
-            const formData =
-                new FormData();
-
-            formData.append(
-                "query",
-                query
+            console.log(
+                "Raw Investigation Response:",
+                responseText
             );
 
 
+            let data = {};
+
             try {
 
-                const response =
-                    await fetch(
-                        "/investigate/",
-                        {
-                            method: "POST",
-                            body: formData,
-                            headers: {
-                                "X-CSRFToken":
-                                    getCookie("csrftoken")
+                data =
+                    JSON.parse(responseText);
+
+            }
+            catch (jsonError) {
+
+                throw new Error(
+                    "Server returned an invalid response. HTTP status: "
+                    + response.status
+                );
+
+            }
+
+
+            console.log(
+                "Investigation response:",
+                data
+            );
+
+
+            /* ====================================================
+               HANDLE SERVER ERROR
+               ==================================================== */
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.details ||
+                    data.error ||
+                    "Investigation failed."
+                );
+
+            }
+
+
+            /* ====================================================
+               SUCCESS STATUS
+               ==================================================== */
+
+            investigationStatus.innerHTML = `
+                <div class="success">
+                    ✅ Investigation completed successfully.
+                </div>
+            `;
+
+
+            /* ====================================================
+               BASIC DATA
+               ==================================================== */
+
+            const results =
+                Array.isArray(data.results)
+                    ? data.results
+                    : [];
+
+
+            const conflicts =
+                Array.isArray(data.conflicts)
+                    ? data.conflicts
+                    : [];
+
+
+            const conflictCount =
+                Number(
+                    data.conflict_count ||
+                    conflicts.length
+                );
+
+
+            /* ====================================================
+               UNIQUE DOCUMENTS
+               ==================================================== */
+
+            const sourceNames = [];
+
+
+            results.forEach(
+                function(result) {
+
+                    const name =
+                        result.document ||
+                        "Unknown Source";
+
+
+                    if (
+                        !sourceNames.includes(name)
+                    ) {
+
+                        sourceNames.push(name);
+
+                    }
+
+                }
+            );
+
+
+            const sourceCount =
+                sourceNames.length;
+
+
+            const evidenceCount =
+                results.length;
+
+
+            /* ====================================================
+               BUILD RESULT HTML
+               ==================================================== */
+
+            let html = "";
+
+
+            /* ====================================================
+               AI ANSWER
+               ==================================================== */
+
+            html += `
+
+                <div class="answer-card">
+
+                    <div class="answer-title">
+                        🤖 AI Investigation Answer
+                    </div>
+
+                    <div class="answer-text">
+                        ${escapeHtml(
+                            data.answer ||
+                            "No answer returned."
+                        )}
+                    </div>
+
+                </div>
+
+            `;
+
+
+            /* ====================================================
+               FOLLOW-UP QUESTIONS
+               ==================================================== */
+
+            html += `
+
+                <div class="followup-card">
+
+                    <div class="followup-title">
+                        💡 Suggested Follow-up Questions
+                    </div>
+
+                    <div class="followup-description">
+                        Continue investigating the evidence
+                        using one of these questions.
+                    </div>
+
+                    <div class="followup-buttons">
+
+                        <button
+                            type="button"
+                            class="followup-button"
+                            onclick="runInvestigation('Which document should I trust?')"
+                        >
+                            🔎 Which document should I trust?
+                        </button>
+
+                        <button
+                            type="button"
+                            class="followup-button"
+                            onclick="runInvestigation('What exactly conflicts between these documents?')"
+                        >
+                            ⚠️ What exactly conflicts between these documents?
+                        </button>
+
+                        <button
+                            type="button"
+                            class="followup-button"
+                            onclick="runInvestigation('Show me the evidence for this conflict.')"
+                        >
+                            📚 Show me the evidence for this conflict.
+                        </button>
+
+                        <button
+                            type="button"
+                            class="followup-button"
+                            onclick="runInvestigation('Is there an authoritative source?')"
+                        >
+                            🛡 Is there an authoritative source?
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            /* ====================================================
+               EVIDENCE ASSESSMENT
+               ==================================================== */
+
+            html += `
+
+                <div class="assessment-card">
+
+                    <div class="assessment-title">
+                        📊 Evidence Assessment
+                    </div>
+
+                    <div class="assessment-grid">
+
+                        <div class="assessment-item">
+
+                            <div class="assessment-number">
+                                ${sourceCount}
+                            </div>
+
+                            <div class="assessment-label">
+                                Sources Retrieved
+                            </div>
+
+                        </div>
+
+
+                        <div class="assessment-item">
+
+                            <div class="assessment-number">
+                                ${evidenceCount}
+                            </div>
+
+                            <div class="assessment-label">
+                                Evidence Chunks
+                            </div>
+
+                        </div>
+
+
+                        <div class="assessment-item">
+
+                            <div class="assessment-number">
+                                ${conflictCount}
+                            </div>
+
+                            <div class="assessment-label">
+                                Conflicts Detected
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    ${
+                        conflictCount > 0
+
+                        ? `
+
+                            <div class="conflict-status conflict-found">
+
+                                ⚠️ Conflicting Evidence Detected
+
+                            </div>
+
+                        `
+
+                        : `
+
+                            <div class="conflict-status no-conflict">
+
+                                ✅ No conflicts detected
+                                in the retrieved evidence.
+
+                            </div>
+
+                        `
+                    }
+
+                </div>
+
+            `;
+
+
+            /* ====================================================
+               EVIDENCE STRENGTH
+               ==================================================== */
+
+            let evidenceStrength = 0;
+
+            const strengthReasons = [];
+
+
+            if (sourceCount >= 2) {
+
+                evidenceStrength += 40;
+
+                strengthReasons.push(
+                    "✓ Multiple relevant sources retrieved"
+                );
+
+            }
+
+            else if (sourceCount === 1) {
+
+                evidenceStrength += 30;
+
+                strengthReasons.push(
+                    "✓ One relevant source retrieved"
+                );
+
+            }
+
+            else {
+
+                strengthReasons.push(
+                    "✗ No relevant source identified"
+                );
+
+            }
+
+
+            if (evidenceCount >= 2) {
+
+                evidenceStrength += 20;
+
+                strengthReasons.push(
+                    "✓ Multiple evidence chunks available"
+                );
+
+            }
+
+
+            if (conflictCount > 0) {
+
+                strengthReasons.push(
+                    "⚠ Retrieved sources disagree"
+                );
+
+                strengthReasons.push(
+                    "? No authoritative source identified"
+                );
+
+            }
+
+            else {
+
+                evidenceStrength += 20;
+
+                strengthReasons.push(
+                    "✓ No conflict detected"
+                );
+
+            }
+
+
+            evidenceStrength =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        evidenceStrength
+                    )
+                );
+
+
+            let strengthLabel;
+
+
+            if (evidenceStrength >= 75) {
+
+                strengthLabel =
+                    "STRONG EVIDENCE";
+
+            }
+
+            else if (evidenceStrength >= 50) {
+
+                strengthLabel =
+                    "MODERATE EVIDENCE";
+
+            }
+
+            else {
+
+                strengthLabel =
+                    "WEAK EVIDENCE";
+
+            }
+
+
+            html += `
+
+                <div class="strength-card">
+
+                    <div class="strength-title">
+                        🧠 Evidence Strength
+                    </div>
+
+                    <div class="strength-score-container">
+
+                        <div class="strength-score">
+                            ${evidenceStrength} / 100
+                        </div>
+
+                        <div class="strength-label">
+                            ${strengthLabel}
+                        </div>
+
+                        <div class="strength-bar">
+
+                            <div
+                                class="strength-bar-fill"
+                                style="width: ${evidenceStrength}%"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="strength-reasons">
+
+                        ${strengthReasons.map(
+                            function(reason) {
+
+                                return `
+                                    <div class="strength-reason">
+                                        ${escapeHtml(reason)}
+                                    </div>
+                                `;
+
                             }
-                        }
-                    );
+                        ).join("")}
+
+                    </div>
 
 
-                const data =
-                    await response.json();
+                    <div class="strength-note">
+
+                        Evidence Strength is a heuristic indicator
+                        based on retrieved evidence and detected
+                        conflicts. It is not a calibrated probability
+                        or certainty score.
+
+                    </div>
+
+                </div>
+
+            `;
 
 
-                if (!response.ok) {
+            /* ====================================================
+               EVIDENCE COMPARISON
+               ==================================================== */
 
-                    throw new Error(
-                        data.error ||
-                        "Investigation failed."
-                    );
+            if (
+                conflicts.length > 0 &&
+                results.length >= 2
+            ) {
 
-                }
+                const first =
+                    results[0];
 
-
-                // ------------------------------------------------
-                // SHOW RESULTS
-                // ------------------------------------------------
-
-                document
-                    .getElementById("resultsSection")
-                    .classList
-                    .remove("hidden");
+                const second =
+                    results[1];
 
 
-                // ------------------------------------------------
-                // AI ANSWER
-                // ------------------------------------------------
+                html += `
 
-                document
-                    .getElementById("answer")
-                    .textContent =
-                    data.answer || "";
+                    <div class="comparison-card">
 
+                        <div class="comparison-title">
+                            ⚠️ Evidence Comparison
+                        </div>
 
-                // ------------------------------------------------
-                // RESULTS
-                // ------------------------------------------------
+                        <div class="comparison-subtitle">
 
-                const results =
-                    data.results || [];
+                            Conflicting evidence was found
+                            across retrieved documents.
+
+                        </div>
 
 
-                // ------------------------------------------------
-                // UNIQUE SOURCES
-                // ------------------------------------------------
-
-                const uniqueSources =
-                    new Set(
-                        results.map(
-                            result =>
-                                result.document
-                        )
-                    );
+                        <div class="comparison-grid">
 
 
-                document
-                    .getElementById("sourceCount")
-                    .textContent =
-                    uniqueSources.size;
+                            <div class="comparison-source">
 
+                                <h4>
 
-                // ------------------------------------------------
-                // CHUNK COUNT
-                // ------------------------------------------------
-
-                document
-                    .getElementById("chunkCount")
-                    .textContent =
-                    results.length;
-
-
-                // ------------------------------------------------
-                // CONFLICT STATUS
-                // ------------------------------------------------
-
-                const conflictCount =
-                    data.conflict_count || 0;
-
-
-                if (conflictCount > 0) {
-
-                    document
-                        .getElementById("conflictStatus")
-                        .textContent =
-                        "⚠️ Conflicts Detected";
-
-                } else {
-
-                    document
-                        .getElementById("conflictStatus")
-                        .textContent =
-                        "✅ No Conflicts";
-
-                }
-
-
-                // ------------------------------------------------
-                // CONFLICTS
-                // ------------------------------------------------
-
-                const conflicts =
-                    data.conflicts || [];
-
-
-                const conflictsSection =
-                    document
-                        .getElementById(
-                            "conflictsSection"
-                        );
-
-
-                const conflictsContainer =
-                    document
-                        .getElementById(
-                            "conflictsContainer"
-                        );
-
-
-                conflictsContainer.innerHTML = "";
-
-
-                if (conflicts.length > 0) {
-
-                    conflictsSection
-                        .classList
-                        .remove("hidden");
-
-
-                    conflicts.forEach(
-                        conflict => {
-
-                            const conflictDiv =
-                                document.createElement(
-                                    "div"
-                                );
-
-
-                            conflictDiv.className =
-                                "conflict";
-
-
-                            conflictDiv.innerHTML = `
-
-                                <div class="conflict-title">
-
-                                    Conflict Type:
+                                    📄
                                     ${escapeHtml(
-                                        conflict.type
+                                        first.document
                                     )}
 
-                                </div>
+                                </h4>
 
                                 <p>
+
                                     ${escapeHtml(
-                                        conflict.reason
+                                        first.text
                                     )}
+
                                 </p>
 
-                                <p>
-                                    <strong>
-                                        📄
-                                        ${escapeHtml(
-                                            conflict.document_a
-                                        )}
-                                    </strong>
-                                </p>
-
-                                <p>
-                                    ${escapeHtml(
-                                        conflict.evidence_a
-                                    )}
-                                </p>
-
-                                <p>
-                                    <strong>
-                                        📄
-                                        ${escapeHtml(
-                                            conflict.document_b
-                                        )}
-                                    </strong>
-                                </p>
-
-                                <p>
-                                    ${escapeHtml(
-                                        conflict.evidence_b
-                                    )}
-                                </p>
-
-                            `;
-
-
-                            conflictsContainer
-                                .appendChild(
-                                    conflictDiv
-                                );
-
-                        }
-                    );
-
-                } else {
-
-                    conflictsSection
-                        .classList
-                        .add("hidden");
-
-                }
-
-
-                // ------------------------------------------------
-                // SUPPORTING EVIDENCE
-                // ------------------------------------------------
-
-                const evidenceContainer =
-                    document
-                        .getElementById(
-                            "evidenceContainer"
-                        );
-
-
-                evidenceContainer.innerHTML = "";
-
-
-                results.forEach(
-                    result => {
-
-                        const evidenceDiv =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        evidenceDiv.className =
-                            "evidence";
-
-
-                        // ----------------------------------------
-                        // SOURCE
-                        // ----------------------------------------
-
-                        const source =
-                            result.source_reference ||
-                            result.document ||
-                            "Unknown Source";
-
-
-                        // ----------------------------------------
-                        // SECTION
-                        // ----------------------------------------
-
-                        const section =
-                            result.section_reference ||
-                            `Evidence Chunk ${
-                                result.chunk_number
-                            }`;
-
-
-                        // ----------------------------------------
-                        // PAGE
-                        // ----------------------------------------
-
-                        let pageText =
-                            "Not applicable";
-
-
-                        if (
-                            result.page_number !== null &&
-                            result.page_number !== undefined
-                        ) {
-
-                            pageText =
-                                `Page ${
-                                    result.page_number
-                                }`;
-
-                        }
-
-
-                        // ----------------------------------------
-                        // MATCH LEVEL
-                        // ----------------------------------------
-
-                        let matchLevel =
-                            result.match_level;
-
-
-                        if (!matchLevel) {
-
-                            const score =
-                                Number(
-                                    result.score || 0
-                                );
-
-
-                            if (score >= 0.30) {
-
-                                matchLevel =
-                                    "Strong";
-
-                            } else if (
-                                score >= 0.15
-                            ) {
-
-                                matchLevel =
-                                    "Moderate";
-
-                            } else {
-
-                                matchLevel =
-                                    "Weak";
-
-                            }
-
-                        }
-
-
-                        // ----------------------------------------
-                        // CREATE CARD
-                        // ----------------------------------------
-
-                        evidenceDiv.innerHTML = `
-
-                            <div class="evidence-header">
-
-                                📄 Source:
-                                ${escapeHtml(
-                                    source
-                                )}
-
-                            </div>
-
-                            <div class="evidence-meta">
-
-                                📌 Section:
-                                <strong>
-                                    ${escapeHtml(
-                                        section
-                                    )}
-                                </strong>
-
-                            </div>
-
-                            <div class="evidence-meta">
-
-                                📖 Page:
-                                <strong>
-                                    ${escapeHtml(
-                                        pageText
-                                    )}
-                                </strong>
-
-                            </div>
-
-                            <div>
-
-                                <span class="similarity">
-
-                                    🔎 Similarity:
-                                    ${escapeHtml(
-                                        matchLevel
-                                    )}
-
+                                <span class="conflict-badge">
+                                    Source A
                                 </span>
 
                             </div>
 
-                            <div class="evidence-meta">
 
-                                Evidence Chunk:
-                                <strong>
+                            <div class="comparison-source">
+
+                                <h4>
+
+                                    📄
                                     ${escapeHtml(
-                                        result.chunk_number
+                                        second.document
                                     )}
-                                </strong>
+
+                                </h4>
+
+                                <p>
+
+                                    ${escapeHtml(
+                                        second.text
+                                    )}
+
+                                </p>
+
+                                <span class="conflict-badge">
+                                    Source B
+                                </span>
 
                             </div>
 
-                            <div class="evidence-text">
 
-                                ${escapeHtml(
-                                    result.text
-                                )}
+                        </div>
+
+
+                        <div style="text-align:center; margin-top:18px;">
+
+                            <span class="conflict-badge">
+                                ⚠️ CONFLICT DETECTED
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            /* ====================================================
+               CONFLICT ANALYSIS
+               ==================================================== */
+
+            if (conflicts.length > 0) {
+
+                html += `
+
+                    <div style="margin-top:25px;">
+
+                        <h3>
+                            ⚠️ Conflict Analysis
+                        </h3>
+
+                `;
+
+
+                conflicts.forEach(
+                    function(conflict) {
+
+                        html += `
+
+                            <div class="conflict-card">
+
+                                <h4>
+                                    ${escapeHtml(
+                                        conflict.type ||
+                                        "Conflict"
+                                    )}
+                                </h4>
+
+
+                                <p>
+
+                                    <strong>
+                                        Source A:
+                                    </strong>
+
+                                    ${escapeHtml(
+                                        conflict.document_a
+                                    )}
+
+                                </p>
+
+
+                                <p>
+
+                                    <strong>
+                                        Source B:
+                                    </strong>
+
+                                    ${escapeHtml(
+                                        conflict.document_b
+                                    )}
+
+                                </p>
+
+
+                                <p>
+
+                                    <strong>
+                                        Reason:
+                                    </strong>
+
+                                    ${escapeHtml(
+                                        conflict.reason
+                                    )}
+
+                                </p>
+
+
+                                <p>
+
+                                    <strong>
+                                        Evidence A:
+                                    </strong>
+
+                                    ${escapeHtml(
+                                        conflict.evidence_a
+                                    )}
+
+                                </p>
+
+
+                                <p>
+
+                                    <strong>
+                                        Evidence B:
+                                    </strong>
+
+                                    ${escapeHtml(
+                                        conflict.evidence_b
+                                    )}
+
+                                </p>
 
                             </div>
 
                         `;
 
-
-                        evidenceContainer
-                            .appendChild(
-                                evidenceDiv
-                            );
-
                     }
                 );
 
 
-            } catch (error) {
+                html += `
+                    </div>
+                `;
 
-                alert(
-                    error.message
+            }
+
+
+            /* ====================================================
+               SUPPORTING EVIDENCE
+               ==================================================== */
+
+            html += `
+
+                <div class="evidence-section">
+
+                    <h3>
+                        📚 Supporting Evidence
+                    </h3>
+
+                    <p class="card-description">
+
+                        Retrieved evidence supporting
+                        this investigation.
+
+                    </p>
+
+            `;
+
+
+            if (results.length > 0) {
+
+                results.forEach(
+                    function(result) {
+
+                        const score =
+                            Number(
+                                result.match_score ||
+                                (
+                                    Number(
+                                        result.score || 0
+                                    ) * 100
+                                )
+                            );
+
+
+                        const matchLevel =
+                            result.match_level ||
+                            "Relevant";
+
+
+                        const section =
+                            result.section_reference ||
+                            (
+                                "Evidence Chunk " +
+                                (
+                                    result.chunk_number ||
+                                    ""
+                                )
+                            );
+
+
+                        const page =
+                            result.page_number
+                                ? "Page " + result.page_number
+                                : "Page not available";
+
+
+                        html += `
+
+                            <div class="evidence-card">
+
+                                <div class="evidence-header">
+
+                                    <div class="source-name">
+
+                                        📄
+                                        ${escapeHtml(
+                                            result.document ||
+                                            "Unknown Document"
+                                        )}
+
+                                    </div>
+
+
+                                    <div class="score">
+
+                                        ${escapeHtml(
+                                            matchLevel
+                                        )}
+
+                                        ·
+
+                                        ${score.toFixed(1)}%
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="evidence-meta">
+
+                                    <strong>
+                                        Source:
+                                    </strong>
+
+                                    ${escapeHtml(
+                                        result.source_reference ||
+                                        result.document ||
+                                        "Unknown"
+                                    )}
+
+                                    &nbsp; | &nbsp;
+
+
+                                    <strong>
+                                        Section:
+                                    </strong>
+
+                                    ${escapeHtml(
+                                        section
+                                    )}
+
+                                    &nbsp; | &nbsp;
+
+
+                                    <strong>
+                                        ${escapeHtml(page)}
+                                    </strong>
+
+                                    &nbsp; | &nbsp;
+
+
+                                    <strong>
+                                        Chunk:
+                                    </strong>
+
+                                    ${escapeHtml(
+                                        String(
+                                            result.chunk_number ||
+                                            ""
+                                        )
+                                    )}
+
+                                </div>
+
+
+                                <div class="evidence-text">
+
+                                    ${escapeHtml(
+                                        result.text ||
+                                        "No evidence text available."
+                                    )}
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
                 );
 
-            } finally {
+            }
 
-                document
-                    .getElementById("loading")
-                    .classList
-                    .add("hidden");
+            else {
+
+                html += `
+
+                    <div class="empty">
+
+                        No supporting evidence was returned.
+
+                    </div>
+
+                `;
 
             }
+
+
+            html += `
+                </div>
+            `;
+
+
+            /* ====================================================
+               PUT RESULTS ON PAGE
+               ==================================================== */
+
+            investigationResults.innerHTML =
+                html;
+
+
+            /* ====================================================
+               SCROLL TO RESULTS
+               ==================================================== */
+
+            investigationResults.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
 
         }
-    );
+
+        catch (error) {
+
+            console.error(
+                "Investigation error:",
+                error
+            );
 
 
-// ==========================================================
-// GET CSRF COOKIE
-// ==========================================================
+            investigationStatus.innerHTML = `
 
-function getCookie(name) {
+                <div class="error">
 
-    let cookieValue = null;
+                    ❌ ${escapeHtml(
+                        error.message ||
+                        "An unexpected error occurred."
+                    )}
 
+                </div>
 
-    if (document.cookie) {
+            `;
 
-        const cookies =
-            document.cookie.split(";");
+        }
 
+        finally {
 
-        for (
-            let cookie of cookies
-        ) {
+            investigateButton.disabled =
+                false;
 
-            cookie =
-                cookie.trim();
-
-
-            if (
-                cookie.startsWith(
-                    name + "="
-                )
-            ) {
-
-                cookieValue =
-                    decodeURIComponent(
-                        cookie.substring(
-                            name.length + 1
-                        )
-                    );
-
-                break;
-
-            }
+            investigateButton.textContent =
+                "Investigate";
 
         }
 
     }
 
 
-    return cookieValue;
-}
+    /* ============================================================
+       FORM SUBMIT
+       ============================================================ */
 
+    investigationForm.addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+            const question =
+                investigationQuery.value.trim();
+
+            runInvestigation(
+                question
+            );
+
+        }
+    );
 
 </script>
 
 </body>
-
 </html>

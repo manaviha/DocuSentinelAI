@@ -1,443 +1,456 @@
 import os
 import time
-import re
+from datetime import datetime
 
 from dotenv import load_dotenv
 from google import genai
 
+from .conflict_detector import extract_dates
 
-# ============================================================
-# LOAD ENVIRONMENT VARIABLES
-# ============================================================
 
 load_dotenv()
 
-API_KEY = os.getenv("GEMINI_API_KEY")
+
+# ============================================================
+# GEMINI CONFIGURATION
+# ============================================================
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+MODEL_NAME = "gemini-3.8-flash"
 
 
 # ============================================================
-# CREATE GEMINI CLIENT
+# LOCAL GROUNDED ANSWER
 # ============================================================
 
-client = None
+def local_grounded_answer(query, results):
 
-if API_KEY:
-    client = genai.Client(
-        api_key=API_KEY
-    )
-
-
-# ============================================================
-# LOCAL GROUNDED FALLBACK
-# ============================================================
-
-def local_grounded_answer(question, evidence):
-
-    if not evidence:
-
-        return """ANSWER:
-Insufficient evidence in the uploaded documents.
-
-EVIDENCE STATUS:
-Insufficient Evidence
-
-REASON:
-No relevant evidence was retrieved from the uploaded documents."""
-
-
-    # --------------------------------------------------------
-    # Collect evidence by document
-    # --------------------------------------------------------
-
-    documents = {}
-
-    for item in evidence:
-
-        document_name = item["document"]
-
-        if document_name not in documents:
-            documents[document_name] = []
-
-        documents[document_name].append(
-            item["text"]
+    if not results:
+        return (
+            "ANSWER: No relevant evidence was found.\n"
+            "EVIDENCE STATUS: Insufficient Evidence"
         )
 
-
-    # --------------------------------------------------------
-    # Detect dates inside retrieved evidence
-    # --------------------------------------------------------
-
-    date_pattern = re.compile(
-        r"\b\d{1,2}\s+"
-        r"(?:January|February|March|April|May|June|July|"
-        r"August|September|October|November|December)"
-        r"\s+\d{4}\b",
-        re.IGNORECASE
-    )
-
-
-    document_dates = {}
-
-    for document_name, texts in documents.items():
-
-        combined_text = " ".join(texts)
-
-        dates = date_pattern.findall(
-            combined_text
-        )
-
-        if dates:
-
-            document_dates[document_name] = list(
-                dict.fromkeys(dates)
-            )
-
+    query_lower = query.lower()
 
     # ========================================================
-    # CONFLICTING DATES
+    # TRUST / AUTHORITY ASSESSMENT
+    # ========================================================
+
+    trust_keywords = [
+        "which document should i trust",
+        "which document can i trust",
+        "which source should i trust",
+        "which source can i trust",
+        "which document is reliable",
+        "which source is reliable",
+        "which document is authoritative",
+        "which source is authoritative",
+        "what document should i trust",
+        "what source should i trust",
+    ]
+
+    is_trust_question = any(
+        keyword in query_lower
+        for keyword in trust_keywords
+    )
+
+    if is_trust_question:
+
+        documents = []
+
+        for result in results:
+
+            document_name = result["document"]
+
+            if document_name not in documents:
+                documents.append(document_name)
+
+        # ----------------------------------------------------
+        # Multiple sources
+        # ----------------------------------------------------
+
+        if len(documents) >= 2:
+
+            answer_lines = [
+                "TRUST ASSESSMENT:",
+                "",
+                "Neither document can currently be treated as "
+                "authoritative based only on the retrieved evidence.",
+                ""
+            ]
+
+            source_counter = 0
+            already_shown = set()
+
+            for result in results:
+
+                document_name = result["document"]
+
+                if document_name in already_shown:
+                    continue
+
+                already_shown.add(document_name)
+
+                source_counter += 1
+
+                source_label = chr(
+                    64 + source_counter
+                )
+
+                answer_lines.append(
+                    f"Source {source_label}: "
+                    f"{document_name}"
+                )
+
+                answer_lines.append(
+                    f"Evidence: {result['text']}"
+                )
+
+                answer_lines.append("")
+
+                if source_counter >= 2:
+                    break
+
+            answer_lines.extend([
+                "RECOMMENDATION:",
+                "Verify the conflicting information against an "
+                "official announcement, authorized record, or "
+                "other authoritative source.",
+                "",
+                "CONFIDENCE: Uncertain",
+                "",
+                "REASON:",
+                "Multiple retrieved documents provide conflicting "
+                "information, and the available evidence does not "
+                "establish which source has higher authority."
+            ])
+
+            return "\n".join(answer_lines)
+
+        # ----------------------------------------------------
+        # Only one source
+        # ----------------------------------------------------
+
+        else:
+
+            document_name = (
+                documents[0]
+                if documents
+                else "the available source"
+            )
+
+            return (
+                "TRUST ASSESSMENT:\n\n"
+                f"The available evidence comes from "
+                f"{document_name}.\n\n"
+                "However, the system cannot independently verify "
+                "that this source is authoritative.\n\n"
+                "RECOMMENDATION:\n"
+                "Verify the information against an official or "
+                "authoritative source.\n\n"
+                "CONFIDENCE: Limited"
+            )
+
+    # ========================================================
+    # DATE CONFLICT ANALYSIS
     # ========================================================
 
     all_dates = []
 
-    for dates in document_dates.values():
+    for result in results:
+
+        dates = extract_dates(
+            result["text"]
+        )
 
         all_dates.extend(dates)
 
-
     unique_dates = list(
-        dict.fromkeys(
-            date.lower()
-            for date in all_dates
-        )
+        set(all_dates)
     )
 
+    # --------------------------------------------------------
+    # Multiple different dates
+    # --------------------------------------------------------
 
     if len(unique_dates) > 1:
 
-        answer_parts = []
+        date_information = []
 
-        for document_name, dates in document_dates.items():
+        for result in results:
 
-            for date in dates:
+            dates = extract_dates(
+                result["text"]
+            )
 
-                answer_parts.append(
-                    f"{document_name} states "
-                    f"{date}."
+            if dates:
+
+                formatted_dates = ", ".join(
+                    date.strftime("%d %B %Y")
+                    for date in dates
                 )
 
+                date_information.append(
+                    f"{result['document']} states "
+                    f"{formatted_dates}."
+                )
 
-        answer = (
-            "The uploaded documents contain conflicting "
+        return (
+            "ANSWER: The uploaded documents contain conflicting "
             "information. "
-            + " ".join(answer_parts)
+            + " ".join(date_information)
+            + "\n\n"
+            "EVIDENCE STATUS: Conflicting Evidence\n"
+            "REASON: Multiple retrieved documents provide "
+            "different dates. The available evidence does not "
+            "establish which date is authoritative."
         )
 
-
-        return f"""ANSWER:
-{answer}
-
-EVIDENCE STATUS:
-Conflicting Evidence
-
-REASON:
-Multiple retrieved documents provide different dates. The available evidence does not establish which date is authoritative."""
-
-
     # ========================================================
-    # SINGLE DATE / SUPPORTED EVIDENCE
+    # SINGLE CONSISTENT DATE
     # ========================================================
 
     if len(unique_dates) == 1:
 
-        date_value = all_dates[0]
-
-        supporting_documents = list(
-            document_dates.keys()
+        formatted_date = (
+            unique_dates[0]
+            .strftime("%d %B %Y")
         )
 
-        answer = (
-            f"The retrieved documents state "
-            f"{date_value}."
+        return (
+            f"ANSWER: The retrieved evidence indicates "
+            f"{formatted_date}.\n\n"
+            "EVIDENCE STATUS: Supported\n"
+            "REASON: The retrieved evidence contains a "
+            "consistent date."
         )
 
-        if len(supporting_documents) == 1:
-
-            reason = (
-                f"The date is supported by "
-                f"{supporting_documents[0]}."
-            )
-
-        else:
-
-            reason = (
-                "The same date appears in multiple "
-                "retrieved documents."
-            )
-
-
-        return f"""ANSWER:
-{answer}
-
-EVIDENCE STATUS:
-Supported
-
-REASON:
-{reason}"""
-
-
     # ========================================================
-    # GENERAL EVIDENCE FALLBACK
+    # GENERAL GROUNDED ANSWER
     # ========================================================
 
-    first_evidence = evidence[0]
+    first_result = results[0]
 
-    evidence_text = first_evidence["text"].strip()
-
-    return f"""ANSWER:
-The retrieved evidence states:
-
-"{evidence_text}"
-
-EVIDENCE STATUS:
-Partially Supported
-
-REASON:
-The answer is based directly on the retrieved evidence because the AI analysis service is unavailable."""
+    return (
+        "ANSWER: Based on the strongest retrieved evidence:\n\n"
+        f"{first_result['text']}\n\n"
+        "EVIDENCE STATUS: Partially Supported\n"
+        "REASON: The answer is based on retrieved document "
+        "evidence, but no independent authoritative "
+        "verification is available."
+    )
 
 
 # ============================================================
-# GEMINI INVESTIGATION
+# GEMINI AI ANSWER
 # ============================================================
 
-def generate_investigation_answer(
-    question,
-    evidence
-):
+def generate_gemini_answer(query, results):
 
-    # --------------------------------------------------------
-    # If Gemini is not configured
-    # --------------------------------------------------------
-
-    if client is None:
-
-        print(
-            "Gemini API key not configured. "
-            "Using local grounded fallback."
+    if not GEMINI_API_KEY:
+        raise Exception(
+            "GEMINI_API_KEY is not configured."
         )
 
-        return local_grounded_answer(
-            question,
-            evidence
-        )
+    client = genai.Client(
+        api_key=GEMINI_API_KEY
+    )
 
+    evidence_text = []
 
-    # --------------------------------------------------------
-    # BUILD EVIDENCE CONTEXT
-    # --------------------------------------------------------
+    for index, result in enumerate(
+        results,
+        start=1
+    ):
 
-    evidence_text = ""
+        evidence_text.append(
+            f"""
+SOURCE {index}
+Document: {result['document']}
+Section: {result.get('section_reference', 'Unknown')}
+Page: {result.get('page_number', 'N/A')}
 
-    for item in evidence:
-
-        evidence_text += f"""
-SOURCE: {item['document']}
-EVIDENCE CHUNK: {item['chunk_number']}
-RELEVANCE LEVEL: {item.get('match_level', 'Unknown')}
-RELEVANCE SCORE: {item.get('score', 0):.3f}
-
-{item['text']}
-
--------------------------
+Evidence:
+{result['text']}
 """
+        )
 
-
-    # --------------------------------------------------------
-    # PROMPT
-    # --------------------------------------------------------
+    evidence_block = "\n".join(
+        evidence_text
+    )
 
     prompt = f"""
 You are DocuSentinel AI, an intelligent document
 investigation assistant.
 
-Answer the user's question using ONLY the retrieved
-evidence from the uploaded documents.
+Answer the user's question ONLY using the supplied
+document evidence.
+
+USER QUESTION:
+{query}
+
+RETRIEVED EVIDENCE:
+{evidence_block}
 
 IMPORTANT RULES:
 
-1. Never invent facts.
+1. Do not invent information.
 
-2. Never use outside knowledge.
+2. If multiple documents contain conflicting information,
+   explicitly identify the conflict.
 
-3. If evidence is insufficient, say:
+3. Never choose one conflicting source as correct unless
+   the evidence clearly establishes its authority.
 
-"Insufficient evidence in the uploaded documents."
+4. If the evidence is insufficient, say so.
 
-4. If multiple documents disagree, identify the conflict.
+5. Communicate uncertainty clearly.
 
-5. Never silently choose one conflicting source.
+6. Mention the document names when they are relevant.
 
-6. Clearly communicate uncertainty.
+7. If the user asks which document/source should be trusted,
+   assess whether the evidence establishes authority.
+   If it does not, clearly recommend verification against
+   an official or authoritative source.
 
-7. Base every claim on the retrieved evidence.
+8. Keep the answer concise and suitable for an
+   investigation dashboard.
 
-User Question:
-{question}
-
-Retrieved Evidence:
-{evidence_text}
-
-Return exactly:
+Use this structure when appropriate:
 
 ANSWER:
-<answer>
+...
 
 EVIDENCE STATUS:
-<Supported / Partially Supported / Insufficient Evidence / Conflicting Evidence>
+Supported / Conflicting Evidence / Partially Supported /
+Insufficient Evidence
 
 REASON:
-<brief explanation based only on the evidence>
+...
 """
 
-
-    # ========================================================
-    # GEMINI REQUEST
-    # ========================================================
-
-    max_retries = 2
-
-    for attempt in range(1, max_retries + 1):
-
-        try:
-
-            print()
-            print("========================================")
-            print("       GEMINI INVESTIGATION REQUEST")
-            print("========================================")
-            print("Attempt:", attempt)
-            print("Model: gemini-3.8-flash")
-            print("========================================")
-
-
-            response = client.models.generate_content(
-                model="gemini-3.8-flash",
-                contents=prompt
-            )
-
-
-            if not response.text:
-
-                raise RuntimeError(
-                    "Gemini returned an empty response."
-                )
-
-
-            print()
-            print("========================================")
-            print("       GEMINI INVESTIGATION SUCCESS")
-            print("========================================")
-
-
-            return response.text
-
-
-        except Exception as error:
-
-            error_message = str(error)
-
-            print()
-            print("========================================")
-            print("        GEMINI SERVICE ERROR")
-            print("========================================")
-            print("Attempt:", attempt)
-            print("Error Type:", type(error).__name__)
-            print("Error Message:", error_message)
-            print("========================================")
-
-
-            # ------------------------------------------------
-            # QUOTA EXHAUSTED
-            # ------------------------------------------------
-
-            if (
-                "429" in error_message
-                or "RESOURCE_EXHAUSTED" in error_message
-                or "quota" in error_message.lower()
-            ):
-
-                print(
-                    "Gemini quota exhausted."
-                )
-
-                print(
-                    "Switching to local grounded fallback."
-                )
-
-                return local_grounded_answer(
-                    question,
-                    evidence
-                )
-
-
-            # ------------------------------------------------
-            # TEMPORARY SERVER ERROR
-            # ------------------------------------------------
-
-            temporary_error = (
-                "503" in error_message
-                or "UNAVAILABLE" in error_message
-                or "overloaded" in error_message.lower()
-                or "high demand" in error_message.lower()
-            )
-
-
-            if temporary_error:
-
-                if attempt < max_retries:
-
-                    wait_time = attempt * 2
-
-                    print(
-                        f"Gemini temporarily unavailable."
-                    )
-
-                    print(
-                        f"Retrying in {wait_time} seconds..."
-                    )
-
-                    time.sleep(wait_time)
-
-                    continue
-
-
-                return local_grounded_answer(
-                    question,
-                    evidence
-                )
-
-
-            # ------------------------------------------------
-            # OTHER GEMINI ERROR
-            # ------------------------------------------------
-
-            print(
-                "Unknown Gemini error."
-            )
-
-            print(
-                "Switching to local grounded fallback."
-            )
-
-            return local_grounded_answer(
-                question,
-                evidence
-            )
-
-
-    # ========================================================
-    # FINAL FALLBACK
-    # ========================================================
-
-    return local_grounded_answer(
-        question,
-        evidence
+    response = client.models.generate_content(
+        model=MODEL_NAME,
+        contents=prompt
     )
+
+    if not response or not response.text:
+
+        raise Exception(
+            "Gemini returned an empty response."
+        )
+
+    return response.text.strip()
+
+
+# ============================================================
+# MAIN INVESTIGATION FUNCTION
+# ============================================================
+
+def generate_investigation_answer(
+    query,
+    results
+):
+
+    # --------------------------------------------------------
+    # First attempt local handling for trust questions.
+    #
+    # This means the feature works even when Gemini quota
+    # is exhausted.
+    # --------------------------------------------------------
+
+    query_lower = query.lower()
+
+    trust_keywords = [
+        "which document should i trust",
+        "which document can i trust",
+        "which source should i trust",
+        "which source can i trust",
+        "which document is reliable",
+        "which source is reliable",
+        "which document is authoritative",
+        "which source is authoritative",
+        "what document should i trust",
+        "what source should i trust",
+    ]
+
+    is_trust_question = any(
+        keyword in query_lower
+        for keyword in trust_keywords
+    )
+
+    if is_trust_question:
+
+        return local_grounded_answer(
+            query,
+            results
+        )
+
+    # --------------------------------------------------------
+    # Try Gemini
+    # --------------------------------------------------------
+
+    try:
+
+        return generate_gemini_answer(
+            query,
+            results
+        )
+
+    except Exception as error:
+
+        error_text = str(error).lower()
+
+        print(
+            "Gemini investigation failed:",
+            error
+        )
+
+        # ----------------------------------------------------
+        # Free-tier quota / rate-limit fallback
+        # ----------------------------------------------------
+
+        if (
+            "429" in error_text
+            or "quota" in error_text
+            or "resource_exhausted" in error_text
+            or "rate limit" in error_text
+        ):
+
+            print(
+                "Gemini quota/rate limit reached. "
+                "Using local grounded fallback."
+            )
+
+        # ----------------------------------------------------
+        # Temporary server error
+        # ----------------------------------------------------
+
+        elif (
+            "503" in error_text
+            or "unavailable" in error_text
+            or "overloaded" in error_text
+        ):
+
+            print(
+                "Gemini service temporarily unavailable. "
+                "Using local grounded fallback."
+            )
+
+        # ----------------------------------------------------
+        # Any other Gemini error
+        # ----------------------------------------------------
+
+        else:
+
+            print(
+                "Gemini unavailable. "
+                "Using local grounded fallback."
+            )
+
+        return local_grounded_answer(
+            query,
+            results
+        )
